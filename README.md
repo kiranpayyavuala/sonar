@@ -48,7 +48,9 @@ configure system
  name
  server url
  token
+ ```
 ----------------------------------------------------------------------------------------
+```
 yum install -y @postgresql
 postgresql-setup --initdb
 systemctl start postgresql
@@ -73,7 +75,9 @@ su - postgres
 createuser sonar
 CREATE DATABASE sonar OWNER sonar;
 ALTER USER sonar WITH ENCRYPTED password 'StrongPassword';
+```
 --------------------------------------------------------------------------------------------
+```
 apache-maven
           conf-> vi settings.xml
                             plugingroup copy it plugin
@@ -99,8 +103,9 @@ apache-maven
         </profile>
      </profiles>
 </settings>
+```
 -----------------------------------------------------
-
+```
 sonarquabescanner
 
 
@@ -117,12 +122,14 @@ sonar.projectName=mavenwebappdemo
 sonar.projectkey=mavenwebappsdemo
 sonar.projectversion=1.0
 sonar.sources=mavenwebappdemo
-
+```
 
 -----------------------------------------------------------------------
 
-
+```
 docker run -d --name sonarqube -p 9000:9000 sonarqube
+
+		or
 
 docker run -d --name sonarqube \
     -p 9000:9000 \
@@ -130,7 +137,7 @@ docker run -d --name sonarqube \
     -e sonar.jdbc.password=sonar \
     -e sonar.jdbc.url=jdbc:postgresql://localhost/sonar \
     sonarqube
-
+```
 
 https://www.baeldung.com/sonar-qube
 https://blog.knoldus.com/integrate-maven-project-sonarqube/
