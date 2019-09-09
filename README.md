@@ -1,7 +1,7 @@
 # sonar
 
 ```
-yum install java-1.8.0-openjdk-devel -y
+sudo yum install -y java-11-openjdk-devel
 alternatives --config javac
 ```
 Download and Install SonarQube
@@ -15,8 +15,10 @@ sudo yum install sonar
 
 chmod 777 /opt/ -R
 
-vi /opt/sonarqube-7.6/conf/sonar.properties
-add database username and password
+vi /opt/sonarqube-7.6/conf/sonar.properties(add database username and password)
+sonar.jdbc.username=sonar
+sonar.jdbc.password=PASSWORD
+sonar.jdbc.url=jdbc:postgresql://localhost:5432/sonardb
 
 cd /opt/sonar/bin/linux-x86-64/
 vi sonar.sh
@@ -29,11 +31,11 @@ sh sonar.sh status
 
 To check logs of sonal
 cat /opt/sonarqube-7.6/logs/sonar.log
-
-
-UI
+cat /opt/sonarqube-7.6/logs/web.log
+```
+For Sonar UI
 http//:ouripaddress:9000
-
+```
 In sonar ui
 admin
 admin
@@ -49,32 +51,29 @@ configure system
  server url
  token
  ```
-----------------------------------------------------------------------------------------
+#Install postgres
 ```
 yum install -y @postgresql
 postgresql-setup --initdb
+
+vi /var/lib/pgsql/data/postgresql.conf
+Listenaddress='*'
+
+vi /var/lib/pgsql/data/pg_hba.conf(change to trust)
+local	all	all	trust
+host	all	0.0.0.0/0	trust
+
 systemctl start postgresql
 systemctl enable postgresql
 systemctl status postgresql
-vi /var/lib/pgsql/data/postgresql.conf
-systemctl restart postgresql
+
 su - postgres
 psql
 
-CREATE DATABASE sonar;
+create sonar user and database
 
-CREATE USER sonar WITH PASSWORD 'StrongPassword';
-
-ALTER USER sonar WITH PASSWORD 'StrongPassword';
-
-GRANT ALL PRIVILEGES ON DATABASE sonar to StrongPassword;
-
-------------------------
-
-su - postgres
-createuser sonar
-CREATE DATABASE sonar OWNER sonar;
-ALTER USER sonar WITH ENCRYPTED password 'StrongPassword';
+\q
+exit
 ```
 --------------------------------------------------------------------------------------------
 ```
@@ -97,7 +96,7 @@ apache-maven
             <properties>
                 <!-- Optional URL to server. Default value is http://localhost:9000 -->
                 <sonar.host.url>
-                  http://54.224.87.69:9000
+                  http://ip:9000
                 </sonar.host.url>
             </properties>
         </profile>
